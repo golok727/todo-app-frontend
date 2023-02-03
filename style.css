@@ -1,0 +1,20 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+body {
+	background: #fff;
+	font-family: "Josefin Sans", sans-serif;
+	font-size: 18px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	line-height: 1.7;
+	height: 100vh;
+	overflow: hidden;
+}
