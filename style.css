@@ -158,6 +158,9 @@ header {
 	.todo:hover {
 		background-color: rgba(0, 0, 0, 0.7);
 	}
+	.todo:hover > span {
+		display: inline-flex;
+	}
 }
 
 .todo input[type="checkbox"] {
@@ -195,6 +198,13 @@ header {
 .todo p {
 	display: block;
 	flex: 1;
+}
+.todo span {
+	display: none;
+}
+.todo span:hover img {
+	filter: invert(17%) sepia(100%) saturate(7164%) hue-rotate(360deg)
+		brightness(110%) contrast(113%);
 }
 
 .app__todos-container__footer {
