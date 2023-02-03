@@ -5,16 +5,227 @@
 	margin: 0;
 }
 
+:root {
+	--clr-bright-blue: hsl(220, 98%, 61%);
+	--gradient-check-background: linear-gradient(
+		to bottom,
+		hsl(192, 100%, 67%),
+		hsl(280, 87%, 65%)
+	);
+
+	--clr-light-theme-very-light-gray: hsl(0, 0%, 98%);
+	--clr-light-theme-very-light-grayish-Blue: hsl(236, 33%, 92%);
+	--clr-light-theme-light-grayish-bLue: hsl(233, 11%, 84%);
+	--clr-light-theme-dark-grayish-blue: hsl(236, 9%, 61%);
+	--clr-light-theme-very-dark-grayish-Blue: hsl(235, 19%, 35%);
+
+	--clr-very-dark-blue: hsl(235, 21%, 11%);
+	--clr-very-dark-desaturated-blue: hsl(235, 24%, 19%);
+	--clr-light-grayish-blue: hsl(234, 39%, 85%);
+	--clr-light-grayish-blue-hover: hsl(236, 33%, 92%);
+	--clr-dark-grayish-blue: hsl(234, 11%, 52%);
+	--clr-very-dark-grayish-blue: hsl(233, 14%, 35%);
+	--clr-very-dark-grayish-blue: hsl(237, 14%, 26%);
+}
+
+img {
+	display: block;
+}
+li {
+	list-style-type: none;
+}
+
+.flex {
+	display: flex;
+}
+
+.items-center {
+	align-items: center;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
+.flex-col {
+	flex-direction: column;
+}
+.gap-1 {
+	gap: 1rem;
+}
+.fit-contain {
+	object-fit: contain;
+}
+.h-screen {
+	height: 100vh;
+}
+.w-screen {
+	width: 100vw;
+}
+
+.w-full {
+	width: 100%;
+}
+.h-full {
+	height: 100%;
+}
+
+.p-0 {
+	padding: 0;
+}
+
 body {
-	background: #fff;
+	background: var(--clr-very-dark-blue);
+	background-image: url("./assets/images/bg-desktop-dark.jpg");
+	background-repeat: no-repeat;
+	background-size: contain;
+
+	color: var(--clr-light-grayish-blue);
+
 	font-family: "Josefin Sans", sans-serif;
 	font-size: 18px;
 
 	display: flex;
-	align-items: center;
+	/* align-items: center; */
 	justify-content: center;
 
 	line-height: 1.7;
 	height: 100vh;
 	overflow: hidden;
+}
+h1 {
+	letter-spacing: 1rem;
+	color: hsl(0, 0%, 98%);
+}
+
+.app-main-container {
+	padding-top: 2rem;
+	width: 500px;
+}
+
+header {
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+
+.create-todo-input {
+	background-color: var(--clr-very-dark-desaturated-blue);
+	border: none;
+	border-radius: 5px;
+	color: var(--clr-light-grayish-blue);
+	padding: 1rem 3rem;
+	outline: none;
+	position: relative;
+	display: block;
+}
+
+.input-container {
+	position: relative;
+}
+.input-container::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 1rem;
+	translate: 0 -50%;
+	border: 1px solid var(--clr-very-dark-grayish-blue);
+	border-radius: 50%;
+
+	--val: 20px;
+	width: var(--val);
+	height: var(--val);
+	z-index: 10;
+}
+
+.app__todos-container {
+	margin-top: 1rem;
+	width: 100%;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.todo {
+	background-color: var(--clr-very-dark-desaturated-blue);
+	border-bottom: 1px solid var(--clr-very-dark-grayish-blue);
+	font-size: 0.9rem;
+	padding: 0.8rem 1rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	transition: background-color 0.2s ease;
+}
+@media (min-width: 767px) {
+	.todo:hover {
+		background-color: rgba(0, 0, 0, 0.7);
+	}
+}
+
+.todo input[type="checkbox"] {
+	appearance: none;
+	border: 1px solid var(--clr-very-dark-grayish-blue);
+	border-radius: 50%;
+
+	--val: 20px;
+	width: var(--val);
+	height: var(--val);
+}
+.todo input[type="checkbox"]:checked {
+	border: none;
+	background-image: var(--gradient-check-background);
+	position: relative;
+}
+
+.todo input[type="checkbox"]:checked::before {
+	content: "";
+	position: absolute;
+	background-image: url("./assets/images/icon-check.svg");
+	background-repeat: no-repeat;
+
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+	--val: 10px;
+	width: var(--val);
+	height: var(--val);
+}
+.todo input[type="checkbox"]:checked ~ p {
+	text-decoration: line-through;
+	color: var(--clr-dark-grayish-blue);
+}
+.todo p {
+	display: block;
+	flex: 1;
+}
+
+.app__todos-container__footer {
+	background-color: var(--clr-very-dark-desaturated-blue);
+	display: flex;
+	color: var(--clr-dark-grayish-blue);
+	font-size: 0.7rem;
+	padding: 0.7rem 1rem;
+	justify-content: space-between;
+	user-select: none;
+}
+.app__todos-container__footer ul {
+	display: flex;
+	gap: 1rem;
+	cursor: pointer;
+}
+.app__todos-container__footer ul li:hover {
+	color: var(--clr-light-grayish-blue-hover);
+}
+.app__todos-container__footer ul li.active {
+	color: hsl(220, 98%, 61%);
+}
+.app__todos-container__footer button {
+	background: none;
+	border: none;
+	color: var(--clr-dark-grayish-blue);
+	cursor: pointer;
+	font-size: 0.7rem;
+	transition: color 0.2s ease;
+}
+
+.app__todos-container__footer button:hover {
+	color: var(--clr-bright-blue);
 }

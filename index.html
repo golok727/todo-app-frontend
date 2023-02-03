@@ -15,6 +15,70 @@
 		<script src="radhe.js" defer></script>
 	</head>
 	<body>
-		<h1>Radhey Shyam</h1>
+		<!-- <h1>Radhey Shyam</h1> -->
+		<div class="app-main-container">
+			<header class="flex items-center">
+				<h1 class="p-0">TODO</h1>
+				<img
+					class="fit-contain"
+					src="./assets/images/icon-sun.svg"
+					alt=""
+					srcset=""
+				/>
+			</header>
+
+			<div class="input-container">
+				<input
+					data-todo-input
+					placeholder="Create a new todo..."
+					class="create-todo-input w-full"
+					type="text"
+				/>
+			</div>
+
+			<div class="app__todos-container">
+				<!--  -->
+				<div data-todo-holder>
+					<div class="todo" data-todo>
+						<input type="checkbox" name="" id="" checked />
+						<p>Todo</p>
+					</div>
+					<div class="todo" data-todo>
+						<input type="checkbox" name="" id="" />
+						<p>Todo</p>
+					</div>
+					<div class="todo" data-todo>
+						<input type="checkbox" name="" id="" />
+						<p>Todo</p>
+					</div>
+					<div class="todo" data-todo>
+						<input type="checkbox" name="" id="" />
+						<p>Todo</p>
+					</div>
+					<div class="todo" data-todo>
+						<input type="checkbox" name="" id="" />
+						<p>Todo</p>
+					</div>
+				</div>
+				<!--  -->
+				<div class="app__todos-container__footer">
+					<div>
+						<span>5 items left</span>
+					</div>
+
+					<div>
+						<ul>
+							<li class="active">All</li>
+							<li class="">Active</li>
+							<li class="">Completed</li>
+						</ul>
+					</div>
+
+					<div>
+						<button>Clear Completed</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
