@@ -139,6 +139,7 @@ function createTodoDiv({ task, id, isCompleted }) {
 	const newP = document.createElement("p");
 	newP.setAttribute("data-editable-p", "");
 	newP.appendChild(document.createTextNode(task));
+	newP.draggable = false;
 
 	const span = document.createElement("span");
 	span.setAttribute("data-delete-todo", "");
@@ -160,9 +161,26 @@ function createTodoDiv({ task, id, isCompleted }) {
 		.querySelector("input")
 		.addEventListener("change", handleTodoCompletionChange);
 
-	newTodoDiv.addEventListener("click", handleEditTodo);
+	newTodoDiv.addEventListener("dblclick", handleEditTodo);
+
+	newTodoDiv.addEventListener("dragstart", handleDragStart);
+	newTodoDiv.addEventListener("dragend", handleDragEnd);
 
 	return newTodoDiv;
+}
+
+todoHolder.addEventListener("dragover", handleDragOver);
+function handleDragStart(e) {
+	console.log("dragstart");
+	e.target.opacity = ".9";
+}
+function handleDragEnd(e) {
+	console.log("dragend");
+	todoHolder.appendChild(e.target);
+}
+function handleDragOver(e) {
+	console.log("dragOver");
+	console.log(e);
 }
 
 function handleTodoCompletionChange(e) {
