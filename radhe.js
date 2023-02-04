@@ -56,7 +56,6 @@ class Application {
 	}
 
 	changeTheme(e) {
-		console.log("changeTheme");
 		if (this.state.theme === "DARK") {
 			this.state.theme = "LIGHT";
 
@@ -69,7 +68,16 @@ class Application {
 		}
 		this.save();
 	}
-
+	editTodoTask(id, task) {
+		todos.forEach((todo) => {
+			if (todo.id === id) {
+				todo.task = task;
+				return;
+			}
+		});
+		this.state.todos = todos;
+		this.save();
+	}
 	save() {
 		this.state.todos = todos;
 		localStorage.setItem("state", JSON.stringify(this.state));
@@ -129,8 +137,8 @@ function createTodoDiv({ task, id, isCompleted }) {
 	newInputCheckbox.setAttribute("data-checkbox", "");
 
 	const newP = document.createElement("p");
+	newP.setAttribute("data-editable-p", "");
 	newP.appendChild(document.createTextNode(task));
-	newP.contentEditable = false;
 
 	const span = document.createElement("span");
 	span.setAttribute("data-delete-todo", "");
@@ -151,6 +159,9 @@ function createTodoDiv({ task, id, isCompleted }) {
 	newTodoDiv
 		.querySelector("input")
 		.addEventListener("change", handleTodoCompletionChange);
+
+	newTodoDiv.addEventListener("click", handleEditTodo);
+
 	return newTodoDiv;
 }
 
@@ -166,7 +177,26 @@ function handleTodoCompletionChange(e) {
 	calculateLeftItemsAndDisplay();
 	app.save();
 }
+function handleEditTodo(e) {
+	// console.log(e.target);
+	e.target.focus();
+	e.target.draggable = false;
+	e.target.contentEditable = true;
+	const todoId = e.target.parentElement.getAttribute("data-todo-id");
+	e.target.addEventListener("focusout", (e) => {
+		app.editTodoTask(todoId, e.target.innerText);
+		e.target.contentEditable = false;
 
+		e.target.parentElement.draggable = true;
+	});
+	e.target.addEventListener("keydown", (e) => {
+		if (e.key === "Enter") {
+			app.editTodoTask(todoId, e.target.innerText);
+			e.target.contentEditable = false;
+			e.target.parentElement.draggable = true;
+		}
+	});
+}
 function handleTodoDeletion(e) {
 	/**
 	 * @type {HTMLDivElement} parenTodoDiv
@@ -176,7 +206,6 @@ function handleTodoDeletion(e) {
 	todos = todos.filter(
 		(todo) => todo.id !== parentTodoDiv.getAttribute("data-todo-id")
 	);
-	console.log(todos);
 
 	parentTodoDiv.remove();
 
