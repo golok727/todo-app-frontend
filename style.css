@@ -154,6 +154,17 @@ header {
 	gap: 1rem;
 	transition: background-color 0.2s ease;
 }
+.todo-holder {
+	max-height: 500px;
+	overflow-x: auto;
+}
+.todo-holder::-webkit-scrollbar {
+	background: var(--clr-very-dark-desaturated-blue);
+	width: 0.1rem;
+}
+::-webkit-scrollbar-thumb {
+	background: var(--gradient-check-background);
+}
 @media (min-width: 767px) {
 	.todo:hover {
 		background-color: rgba(0, 0, 0, 0.7);
