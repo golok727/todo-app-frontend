@@ -55,7 +55,20 @@ class Application {
 		while (todoHolder.firstChild) todoHolder.firstChild.remove();
 	}
 
-	changeTheme() {}
+	changeTheme(e) {
+		console.log("changeTheme");
+		if (this.state.theme === "DARK") {
+			this.state.theme = "LIGHT";
+
+			document.documentElement.classList = "light-mode";
+			e.target.src = "./assets/images/icon-moon.svg";
+		} else if (this.state.theme === "LIGHT") {
+			this.state.theme = "DARK";
+			document.documentElement.classList = "dark-mode";
+			e.target.src = "./assets/images/icon-sun.svg";
+		}
+		this.save();
+	}
 
 	save() {
 		this.state.todos = todos;
@@ -66,6 +79,9 @@ class Application {
 const todoHolder = $("[data-todo-holder]");
 
 const app = new Application(todoHolder);
+
+const themeSwitcher = $("[data-theme-switcher]");
+themeSwitcher.addEventListener("click", (e) => app.changeTheme(e));
 
 /**
  * @type {HTMLInputElement} todoInput
@@ -208,7 +224,16 @@ function getCurrentSortingMode(sortingMenu) {
 
 // Display on document load
 window.addEventListener("DOMContentLoaded", () => {
-	calculateLeftItemsAndDisplay();
+	if (app.state.theme === "DARK")
+		document.documentElement.className = "dark-mode";
+	else if (app.state.theme === "LIGHT")
+		document.documentElement.className = "light-mode";
+	else if (app.state.theme === "LIGHT") calculateLeftItemsAndDisplay();
+
+	if (app.state.theme === "DARK")
+		themeSwitcher.src = "./assets/images/icon-sun.svg";
+	else themeSwitcher.src = "./assets/images/icon-moon.svg";
+
 	app.render(todos);
 });
 
