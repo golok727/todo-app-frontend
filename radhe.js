@@ -130,6 +130,7 @@ function createTodoDiv({ task, id, isCompleted }) {
 
 	const newP = document.createElement("p");
 	newP.appendChild(document.createTextNode(task));
+	newP.contentEditable = false;
 
 	const span = document.createElement("span");
 	span.setAttribute("data-delete-todo", "");

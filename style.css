@@ -16,8 +16,6 @@
 	--clr-light-theme-light-grayish-bLue: hsl(233, 11%, 84%);
 	--clr-light-theme-dark-grayish-blue: hsl(236, 9%, 61%);
 
-	--clr-light-grayish-blue: hsl(234, 39%, 85%);
-	--clr-light-grayish-blue-hover: hsl(236, 33%, 92%);
 	--clr-dark-grayish-blue: hsl(233, 11%, 52%);
 	--clr-very-dark-grayish-blue: hsl(233, 14%, 35%);
 	--clr-very-dark-grayish-blue: hsl(237, 14%, 26%);
@@ -26,12 +24,24 @@
 	--clr-background: hsl(235, 21%, 11%);
 	--clr-text-todo: #cacde8;
 	--clr-todo-background: hsl(235, 24%, 19%);
+	--clr-input-text: hsl(234, 39%, 85%);
+	--clr-todo-hover: rgba(0, 0, 0, 0.8);
+	--clr-li-hover: hsl(236, 33%, 92%);
 }
 .light-mode {
+	--clr-input-text: hsl(231, 9%, 16%);
+
+	--clr-li-hover: hsl(240, 9%, 13%);
+	--clr-todo-hover: hsla(240, 8%, 82%, 0.8);
 	--clr-text-todo: hsl(235, 19%, 35%);
 	--clr-background: hsl(236, 33%, 92%);
 	--clr-todo-background: hsl(0, 0%, 98%);
 }
+html.light-mode .todo {
+	backdrop-filter: blur(4px);
+	background: hsla(0, 0%, 100%, 0.8);
+}
+
 img {
 	display: block;
 }
@@ -84,7 +94,7 @@ body {
 	background-repeat: no-repeat;
 	background-size: contain;
 
-	color: var(--clr-light-grayish-blue);
+	color: var(--clr-input-text);
 
 	font-family: "Josefin Sans", sans-serif;
 	font-size: 18px;
@@ -120,7 +130,7 @@ header {
 	background-color: var(--clr-todo-background);
 	border: none;
 	border-radius: 5px;
-	color: var(--clr-light-grayish-blue);
+	color: var(--clr-input-text);
 	padding: 1rem 3rem;
 	outline: none;
 	position: relative;
@@ -181,14 +191,15 @@ header {
 	html.light-mode body {
 		background-image: url("./assets/images/bg-mobile-light.jpg");
 	}
+	.todo > span {
+		display: inline-flex !important;
+	}
 }
 
 @media (min-width: 767px) {
 	.todo:hover {
-		background-color: rgba(0, 0, 0, 0.8);
-		backdrop-filter: blur(4px);
+		background-color: var(--clr-todo-hover) !important;
 	}
-
 	.todo:hover > span {
 		display: inline-flex;
 	}
@@ -253,7 +264,7 @@ header {
 	cursor: pointer;
 }
 .app__todos-container__footer ul li:hover {
-	color: var(--clr-light-grayish-blue-hover);
+	color: var(--clr-li-hover);
 }
 .app__todos-container__footer ul li.active {
 	color: hsl(220, 98%, 61%);
