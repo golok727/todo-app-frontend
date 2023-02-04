@@ -228,7 +228,8 @@ window.addEventListener("DOMContentLoaded", () => {
 		document.documentElement.className = "dark-mode";
 	else if (app.state.theme === "LIGHT")
 		document.documentElement.className = "light-mode";
-	else if (app.state.theme === "LIGHT") calculateLeftItemsAndDisplay();
+
+	calculateLeftItemsAndDisplay();
 
 	if (app.state.theme === "DARK")
 		themeSwitcher.src = "./assets/images/icon-sun.svg";
