@@ -23,20 +23,62 @@ class Todo {
 		this.isCompleted = false;
 	}
 }
-
 /**
  * @type {Todo[]} todos
  */
 
-let todos = [...dummyTodos];
+let todos = [...JSON.parse(localStorage.getItem("state")).todos];
+
+class Application {
+	/**
+	 * @param {HTMLDivElement} todoHolder
+	 */
+	constructor(todoHolder) {
+		this.todoHolder = todoHolder;
+
+		this.state = JSON.parse(localStorage.getItem("state")) || {
+			theme: "DARK",
+			currentMode: "ALL",
+			todos,
+		};
+	}
+	/**
+	 * @param {Todo[]} todos
+	 */
+	render(todos) {
+		this.clear();
+		todos.forEach((todo) => {
+			todoHolder.appendChild(createTodoDiv(todo));
+		});
+	}
+	clear() {
+		while (todoHolder.firstChild) todoHolder.firstChild.remove();
+	}
+
+	changeTheme() {}
+
+	save() {
+		this.state.todos = todos;
+		localStorage.setItem("state", JSON.stringify(this.state));
+	}
+}
 
 const todoHolder = $("[data-todo-holder]");
+
+const app = new Application(todoHolder);
 
 /**
  * @type {HTMLInputElement} todoInput
  */
 const todoInput = $("[data-todo-input]");
 todoInput.addEventListener("keydown", handleTodoInput);
+
+const clearCompletedButton = $("[data-clear-completed]");
+clearCompletedButton.addEventListener("click", () => {
+	todos = todos.filter((todo) => !todo.isCompleted);
+	app.render(todos);
+	app.save();
+});
 
 // Functions
 function handleTodoInput(e) {
@@ -51,6 +93,9 @@ function handleTodoInput(e) {
 		todoHolder.appendChild(newTodoDiv);
 		calculateLeftItemsAndDisplay();
 		e.target.value = "";
+
+		app.save();
+
 		console.log(todos);
 	}
 }
@@ -60,6 +105,7 @@ function createTodoDiv({ task, id, isCompleted }) {
 	newTodoDiv.classList.add("todo");
 	newTodoDiv.setAttribute("data-todo", "");
 	newTodoDiv.setAttribute("data-todo-id", id);
+	newTodoDiv.draggable = true;
 
 	const newInputCheckbox = document.createElement("input");
 	newInputCheckbox.type = "checkbox";
@@ -101,6 +147,7 @@ function handleTodoCompletionChange(e) {
 	});
 
 	calculateLeftItemsAndDisplay();
+	app.save();
 }
 
 function handleTodoDeletion(e) {
@@ -117,6 +164,8 @@ function handleTodoDeletion(e) {
 	parentTodoDiv.remove();
 
 	calculateLeftItemsAndDisplay();
+
+	app.save();
 }
 
 // UI
@@ -125,27 +174,43 @@ let sortingMenu = $("[data-sorter]");
 let currentSortMode = getCurrentSortingMode(sortingMenu);
 
 sortingMenu.querySelectorAll("li").forEach((sorter) => {
-	sorter.addEventListener("click", (e) => {
-		if (e.target.classList.contains("active")) return;
-		sortingMenu.querySelector(".active").classList.remove("active");
-		e.target.classList.add("active");
-		currentSortMode = getCurrentSortingMode(sortingMenu);
-	});
+	sorter.addEventListener("click", todoSorterHandler);
 });
 
+function todoSorterHandler(e) {
+	if (e.target.classList.contains("active")) return;
+	sortingMenu.querySelector(".active").classList.remove("active");
+	e.target.classList.add("active");
+	currentSortMode = getCurrentSortingMode(sortingMenu);
+	app.state.currentMode = currentSortMode;
+	app.save();
+	if (currentSortMode === "ALL") {
+		app.render(todos);
+	} else if (currentSortMode === "ACTIVE") {
+		app.render(todos.filter((todo) => !todo.isCompleted));
+	} else {
+		app.render(todos.filter((todo) => todo.isCompleted));
+	}
+}
+
 function calculateLeftItemsAndDisplay() {
-	const leftItems = todos.reduce((sum, todo) => {
-		if (!todo.isCompleted) return sum + 1;
-		else return sum + 0;
-	}, 0);
+	const leftItems = todos.filter((todo) => !todo.isCompleted).length;
 
 	const leftItemsDisplaySpan = $("[data-left-items]");
-	leftItemsDisplaySpan.innerText = leftItems;
+	leftItemsDisplaySpan.innerText = `${leftItems} ${
+		leftItems === 1 ? " item" : " items"
+	}`;
 }
 
 function getCurrentSortingMode(sortingMenu) {
 	return sortingMenu.querySelector(".active").innerText.toUpperCase();
 }
+
+// Display on document load
+window.addEventListener("DOMContentLoaded", () => {
+	calculateLeftItemsAndDisplay();
+	app.render(todos);
+});
 
 /**
  *
@@ -165,10 +230,3 @@ function $$(selector) {
 function $(selector) {
 	return document.querySelector(selector);
 }
-
-window.addEventListener("DOMContentLoaded", () => {
-	calculateLeftItemsAndDisplay();
-	todos.forEach((todo) => {
-		todoHolder.appendChild(createTodoDiv(todo));
-	});
-});
