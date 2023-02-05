@@ -126,7 +126,7 @@ p[contentEditable="true"] {
 	outline: none;
 }
 p[data-editable-p] {
-	cursor: text;
+	cursor: crosshair;
 }
 header {
 	justify-content: space-between;
@@ -173,7 +173,7 @@ header {
 	background-color: var(--clr-todo-background);
 	border-bottom: 1px solid var(--clr-todo-border);
 	color: var(--clr-text-todo);
-	cursor: pointer;
+	cursor: move;
 	font-size: 0.9rem;
 	padding: 0.8rem 1rem;
 	display: flex;
@@ -201,6 +201,19 @@ header {
 	}
 	.todo > span {
 		display: inline-flex !important;
+	}
+
+	.app-main-container {
+		width: auto;
+		padding: 3rem 2rem !important;
+	}
+	header h1 {
+		font-weight: 400;
+		font-size: 1.5rem;
+		letter-spacing: 0.4rem;
+	}
+	.todo-holder {
+		max-height: 300px;
 	}
 }
 

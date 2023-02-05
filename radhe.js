@@ -39,7 +39,7 @@ class Application {
 		this.state = JSON.parse(localStorage.getItem("state")) || {
 			theme: "DARK",
 			currentMode: "ALL",
-			todos,
+			todos: [],
 		};
 	}
 	/**
@@ -171,16 +171,50 @@ function createTodoDiv({ task, id, isCompleted }) {
 
 todoHolder.addEventListener("dragover", handleDragOver);
 function handleDragStart(e) {
-	console.log("dragstart");
 	e.target.opacity = ".9";
+	e.target.classList.add("dragging");
 }
 function handleDragEnd(e) {
-	console.log("dragend");
-	todoHolder.appendChild(e.target);
+	e.target.classList.remove("dragging");
+	todos = [...$$("[data-todo]")].map((todo) => ({
+		id: todo.getAttribute("data-todo-id"),
+		task: todo.querySelector("p").innerText,
+		isCompleted: todo.querySelector("input[type='checkbox'").checked,
+	}));
+
+	app.state.todos = todos;
+	app.save();
 }
 function handleDragOver(e) {
-	console.log("dragOver");
-	console.log(e);
+	e.preventDefault();
+	/** 
+	  @type {HTMLDivElement} afterElem
+	 */
+	const afterElem = findDragAfterElement(todoHolder, e.clientY);
+	const dragging = $(".dragging");
+	if (!afterElem) {
+		todoHolder.appendChild(dragging);
+	} else {
+		todoHolder.insertBefore(dragging, afterElem);
+	}
+}
+
+function findDragAfterElement(container, y) {
+	const draggableElems = [
+		...container.querySelectorAll("[data-todo]:not(.dragging)"),
+	];
+	return draggableElems.reduce(
+		(closest, child) => {
+			const box = child.getBoundingClientRect();
+			const offset = y - box.top - box.height / 2;
+			if (offset < 0 && offset > closest.offset) {
+				return { offset: offset, element: child };
+			} else {
+				return closest;
+			}
+		},
+		{ offset: Number.NEGATIVE_INFINITY }
+	).element;
 }
 
 function handleTodoCompletionChange(e) {
