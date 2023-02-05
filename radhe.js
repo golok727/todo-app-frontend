@@ -1,20 +1,16 @@
-console.log("Radhey");
+// Radhey Shyam
+"use-strict";
 
-// Todo
-/**
- * Work on sorting the list and re rendering it
- * work on clear completed button
- * and styles
- *
- */
-
-const dummyTodos = [
-	{ id: "4555454865463", task: "Chant Radhey Krsna", isCompleted: false },
-	{ id: "4234242342342", task: "Paint some picture", isCompleted: true },
-	{ id: "2342342342342", task: "Code some website", isCompleted: false },
-	{ id: "2342312222342", task: "Eat", isCompleted: false },
-	{ id: "2342341242342", task: "Wash Cloths", isCompleted: false },
-];
+if (!localStorage.getItem("state")) {
+	localStorage.setItem(
+		"state",
+		JSON.stringify({
+			theme: "DARK",
+			currentMode: "ALL",
+			todos: [],
+		})
+	);
+}
 
 class Todo {
 	constructor(task) {
@@ -23,11 +19,12 @@ class Todo {
 		this.isCompleted = false;
 	}
 }
+
 /**
  * @type {Todo[]} todos
  */
 
-let todos = [...JSON.parse(localStorage.getItem("state")).todos];
+let todos = [...JSON.parse(localStorage.getItem("state"))?.todos] || [];
 
 class Application {
 	/**
@@ -85,7 +82,6 @@ class Application {
 }
 
 const todoHolder = $("[data-todo-holder]");
-
 const app = new Application(todoHolder);
 
 const themeSwitcher = $("[data-theme-switcher]");
