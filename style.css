@@ -107,6 +107,7 @@ body {
 	line-height: 1.7;
 	height: 100vh;
 	overflow: hidden;
+	transition: all 0.7s ease;
 }
 
 html.light-mode body {
